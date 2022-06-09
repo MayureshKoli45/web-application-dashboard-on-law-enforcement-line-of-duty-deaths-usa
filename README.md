@@ -12,4 +12,4 @@ For detailed project description plese download and check the project_descriptio
 
 Description, data mining python script, dataset csv files, images used in this project and jupyter notebook are all provided in the code section make sure to check all this stuff to understand the project.
 
-Tableau visualization link :- 
+Tableau visualization link :- https://public.tableau.com/app/profile/mayuresh.koli/viz/USALawEnforcementLineofDutyDeaths/main_dashboard
