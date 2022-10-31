@@ -1,14 +1,15 @@
 # Web-Scrapping-and-Data-Analysis-on-USA-Police-Deaths-Dataset-
 
-Note -> The analysis was done on first version of dataset. New version is updated every month.
+Note -> The analysis was done on first version of dataset which is "police_deaths_in_america". New version is updated every month.
 
 New Version Features -> With the new web scrapper I have upgraded dataset with more information.
 
-                        1) Splitted the dataset into 2 different datasets 1 for Human Unit and other for K9 Unit.
-                        2) Check out the new web scrapper code in this file "final_scrapper_program_with_comments".
-                        3) Also added the correction file which is needed to adjust some data points from K9 dataset.
-                        4) Extended data of Human Unit dataset to 13 Features.
-                        5) Extended data of K9 Unit dataset to 14 Features.
+                        1) The new dataset version is "police_deaths_USA_v6" and "k9_deaths_USA_v6" (For all versions please check out this link :-https://www.kaggle.com/datasets/mayureshkoli/police-deaths-in-usa-from-1791-to-2022)
+                        2) Splitted the dataset into 2 different datasets 1 for Human Unit and other for K9 Unit.
+                        3) Check out the new web scrapper code in this file "final_scrapper_program_with_comments".
+                        4) Also added the correction file which is needed to adjust some data points from K9 dataset.
+                        5) Extended data of Human Unit dataset to 13 Features.
+                        6) Extended data of K9 Unit dataset to 14 Features.
 
 Data Analyst: Mayuresh Koli
 
