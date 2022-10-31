@@ -1,5 +1,15 @@
 # Web-Scrapping-and-Data-Analysis-on-USA-Police-Deaths-Dataset-
 
+Note -> The analysis was done on first version of dataset. New version is updated every month.
+
+New Version Features -> With the new web scrapper I have upgraded dataset with more information.
+
+                        1) Splitted the dataset into 2 different datasets 1 for Human Unit and other for K9 Unit.
+                        2) Check out the new web scrapper code in this file "final_scrapper_program_with_comments".
+                        3) Also added the correction file which is needed to adjust some data points from K9 dataset.
+                        4) Extended data of Human Unit dataset to 13 Features.
+                        5) Extended data of K9 Unit dataset to 14 Features.
+
 Data Analyst: Mayuresh Koli
 
 I am going to scrape all the police deaths data which occured in USA from 1791 to Present including both Human Unit and K9 Unit which are registered on this website https://www.odmp.org/
