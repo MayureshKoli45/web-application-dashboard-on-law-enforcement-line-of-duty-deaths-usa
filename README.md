@@ -4,7 +4,7 @@ Note -> The analysis was done on first version of dataset which is "police_death
 
 New Version Features -> With the new web scrapper I have upgraded dataset with more information.
 
-                        1) The new dataset version is "police_deaths_USA_v6" and "k9_deaths_USA_v6" (For all versions please check out this link :-https://www.kaggle.com/datasets/mayureshkoli/police-deaths-in-usa-from-1791-to-2022)
+                        1) The new dataset version is "police_deaths_USA_v6" and "k9_deaths_USA_v6" Which is in "After Major Update Versions" folder (For all versions please check out this link :-https://www.kaggle.com/datasets/mayureshkoli/police-deaths-in-usa-from-1791-to-2022)
                         2) Splitted the dataset into 2 different datasets 1 for Human Unit and other for K9 Unit.
                         3) Check out the new web scrapper code in this file "final_scrapper_program_with_comments".
                         4) Also added the correction file which is needed to adjust some data points from K9 dataset.
