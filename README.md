@@ -35,7 +35,7 @@ Conducting a data analysis on the police deaths in America dataset to find some 
 Dataset Description:
 This dataset contains information on fatal police deaths in the United States. The data includes the victim's rank, name, department, date of death, and cause of death. The data spans from 1791 to the present day. This dataset will be updated on yearly basis.
 
-For detailed project description plese download and check the project_description file provided in code section
+For detailed project description plese download and check the project_description and final_scrapper_program_with_comments file provided in code section
 
 Description, data mining python script, dataset csv files, images used in this project and jupyter notebook are all provided in the code section make sure to check all this stuff to understand the project.
 
