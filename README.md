@@ -1,4 +1,4 @@
-# Web-Scrapping-and-Data-Analysis-on-USA-Police-Deaths-Dataset-
+# WebScraping_And_WebApp_On_Law_Enforcement_Line_Of_Duty_Deaths_USA
 
 Note -> The analysis was done on first version of dataset which is "police_deaths_in_america". New version is updated every month.
 
