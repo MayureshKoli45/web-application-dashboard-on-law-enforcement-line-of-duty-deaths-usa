@@ -1,4 +1,9 @@
 numpy
 pandas
+plotly
 matplotlib
+scipy
 streamlit
+requests
+beautifulsoup4
+python-dateutil
