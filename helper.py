@@ -1,5 +1,9 @@
+import streamlit as st
+import pandas as pd
 import plotly.express as px
 import plotly.figure_factory as ff
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # default death tally
 def death_tally(df):
@@ -149,6 +153,42 @@ def fetch_death_tally_data(df, view_by, year_month_dow_day, state):
     return temp_df, display_title
 
 
+def fetch_death_tally(df, selected_view):
+    df = df[['Name', 'Year', 'Month', 'Day of week', 'Day', 'State']]
+    if selected_view == "Year":
+        years = year_list(df)
+        state = state_list(df)
+        selected_year = st.sidebar.selectbox("Select Year", years)
+        selected_state = st.sidebar.selectbox("Select State", state)
+        death_tally, display_title = fetch_death_tally_data(df, selected_view, selected_year, selected_state)
+        return death_tally, display_title
+
+    if selected_view == "Month":
+        month = month_list()
+        state = state_list(df)
+        selected_month = st.sidebar.selectbox("Select Month", month)
+        selected_state = st.sidebar.selectbox("Select State", state)
+        death_tally, display_title = fetch_death_tally_data(df, selected_view, selected_month, selected_state)
+        return death_tally, display_title
+
+    if selected_view == "Day of week":
+        day_of_week = day_of_week_list()
+        state = state_list(df)
+        selected_day_of_week = st.sidebar.selectbox("Select Day of Week", day_of_week)
+        selected_state = st.sidebar.selectbox("Select State", state)
+        death_tally, display_title = fetch_death_tally_data(df, selected_view, selected_day_of_week, selected_state)
+        return death_tally, display_title
+
+    if selected_view == "Day":
+        day = days_list(df)
+        state = state_list(df)
+        selected_day = st.sidebar.selectbox("Select Day", day)
+        selected_state = st.sidebar.selectbox("Select State", state)
+        death_tally, display_title = fetch_death_tally_data(df, selected_view, selected_day, selected_state)
+        return death_tally, display_title
+
+
+
 def deaths_distribution_over_the_years(df):
     deaths_distribution = df[['Name','Year']]
     deaths_distribution = deaths_distribution.groupby("Year").count().reset_index()
@@ -169,21 +209,13 @@ def deaths_distribution_over_the_years(df):
     return fig
 
 
-def age_distribution(df):
-    age_df = df[['Name','Age','Cause']]
-    age_df = age_df.dropna()
-    age_df = age_df[age_df['Age'] < 100]
-
-    causes_list = age_df.groupby('Cause').count().sort_values(by='Age',ascending=False)
-    causes_list = causes_list.index.to_list()
-    causes_list = causes_list[0:8]
-    causes_list.insert(0, "Overall")
-    causes_list.append("Other")
-    causes_list = causes_list[::-1]
-
-    for i in range(len(age_df)):
-        if age_df.iloc[i][2] not in causes_list:
-            age_df.iloc[i,2] = 'Other'
+def age_distribution(csv_path):
+    age_df = pd.read_csv(csv_path)
+    causes_list = age_df['Cause'].unique().tolist()
+    causes_list.remove("Other")
+    causes_list.sort(reverse=True)
+    causes_list.insert(0,"Other")
+    causes_list.append("Overall")
 
     x1 = age_df[age_df['Cause'] == causes_list[0]]['Age']
     x2 = age_df[age_df['Cause'] == causes_list[1]]['Age']
@@ -208,9 +240,219 @@ def age_distribution(df):
         title='Age Distribution by Causes of Death',
         width=1000,
         height=600,
-        font=dict(
-            size=20)
+        font=dict(size=20)
     )
     
-    return fig    
+    return fig 
+
+
+def heatmap_year_vs_cause(csv_path):
+    df = pd.read_csv(csv_path)
+
+    fig, ax = plt.subplots(figsize=(20,20))
+    ax = sns.heatmap(df.pivot_table(index='Cause', columns='Year', values='Name', aggfunc='count').fillna(0),annot=True,fmt="g")
+    ax.set_title("Heatmap Year Vs Cause of Death", fontsize=30)
+
+    return fig
+
+
+def month_death_count_bar_chart(df):
+    sorted_month_df = df[['Name', 'Month']]
+    sorted_month_df = sorted_month_df.groupby("Month").count().sort_values(by='Name', ascending=False).reset_index()
+    sorted_month_df.rename(columns={'Name':'Death Count'},inplace=True)
+
+    fig, ax = plt.subplots(figsize=(20,10))
+    ax = sns.barplot(data=sorted_month_df,x="Death Count", y="Month",palette="magma")
     
+    plt.suptitle("Registered police deaths in USA",fontsize=30)
+    plt.title("Month wise",fontsize=20)
+
+    plt.xlabel("Death Count",fontsize=20)
+    plt.ylabel("Months",fontsize=20)
+
+    plt.xticks(fontsize=20)
+    plt.yticks(fontsize=20)
+
+    ax.bar_label(ax.containers[0],fontsize=20)
+
+    return fig
+
+def day_death_count_bar_chart(df):
+    sorted_month_df = df[['Name', 'Day of week']]
+    sorted_month_df = sorted_month_df.groupby("Day of week").count().sort_values(by='Name', ascending=False).reset_index()
+    sorted_month_df.rename(columns={'Name':'Death Count'},inplace=True)
+
+    fig, ax = plt.subplots(figsize=(20,10))
+    ax = sns.barplot(data=sorted_month_df,x="Death Count", y="Day of week",palette="magma")
+    
+    plt.suptitle("Registered police deaths in USA",fontsize=30)
+    plt.title("Day wise",fontsize=20)
+
+    plt.xlabel("Death Count",fontsize=20)
+    plt.ylabel("Day of Week",fontsize=20)
+
+    plt.xticks(fontsize=20)
+    plt.yticks(fontsize=20)
+
+    ax.bar_label(ax.containers[0],fontsize=20)
+
+    return fig    
+
+def rank_tree_map(df):
+    fig = px.treemap(df,path=["Rank"])  
+
+    fig.update_layout(
+        autosize=False,
+        title='Rank With the Most Death',
+        width=1000,
+        height=600,
+        font=dict(size=20)
+    )  
+    
+    return fig
+
+
+def top_ten_filter_drop_down_list():
+    filter_by_list = ['Ranks', 'Years', 'States',  'Departments', 'Murder Weapons', 'Days of Month', 'Cause of Deaths']
+
+    return filter_by_list
+
+
+def top_ten_rankings_fig(df, selected_filter):
+    if selected_filter == "Ranks":
+        temp_df = df[['Name', 'Rank']]
+        temp_df = temp_df.groupby("Rank").count().sort_values(by='Name', ascending=False).reset_index()
+        temp_df.rename(columns={'Name':'Death Count'},inplace=True)
+        top_ten = temp_df.iloc[0:10]
+
+        fig, ax = plt.subplots(figsize=(20,10))
+        ax = sns.barplot(data=top_ten,x="Death Count", y="Rank",palette="YlOrRd_r")
+    
+        plt.suptitle("Top Ten Deadly Ranks",fontsize=30)
+
+        plt.xlabel("Death Count",fontsize=20)
+        plt.ylabel("Rank",fontsize=20)
+
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
+
+        ax.bar_label(ax.containers[0],fontsize=20)
+ 
+    elif selected_filter == "Years":
+        temp_df = df[['Name', 'Year']]
+        temp_df = temp_df.groupby("Year").count().sort_values(by='Name', ascending=False).reset_index()
+        temp_df.rename(columns={'Name':'Death Count'},inplace=True)
+        top_ten = temp_df.iloc[0:10]
+        top_ten['Year'] = top_ten['Year'].astype("str")
+
+        fig, ax = plt.subplots(figsize=(20,10))
+        ax = sns.barplot(data=top_ten,x="Death Count", y="Year",palette="Reds_r")
+    
+        plt.suptitle("Top Ten Deadly Years",fontsize=30)
+
+        plt.xlabel("Death Count",fontsize=20)
+        plt.ylabel("Year",fontsize=20)
+
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
+
+        ax.bar_label(ax.containers[0],fontsize=20)
+
+    elif selected_filter == "States":
+        temp_df = df[['Name', 'State']]
+        temp_df = temp_df.groupby("State").count().sort_values(by='Name', ascending=False).reset_index()
+        temp_df.rename(columns={'Name':'Death Count'},inplace=True)
+        temp_df = temp_df[temp_df['State'] != "United States"]
+        top_ten = temp_df.iloc[0:10]
+
+        fig, ax = plt.subplots(figsize=(20,10))
+        ax = sns.barplot(data=top_ten,x="Death Count", y="State",palette="Oranges_r")
+    
+        plt.suptitle("Top Ten Deadly States",fontsize=30)
+
+        plt.xlabel("Death Count",fontsize=20)
+        plt.ylabel("State",fontsize=20)
+
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
+
+        ax.bar_label(ax.containers[0],fontsize=20)
+
+    elif selected_filter == "Departments":
+        temp_df = df[['Name', 'Department']]
+        temp_df = temp_df.groupby("Department").count().sort_values(by='Name', ascending=False).reset_index()
+        temp_df.rename(columns={'Name':'Death Count'},inplace=True)
+        top_ten = temp_df.iloc[0:10]
+
+        fig, ax = plt.subplots(figsize=(20,10))
+        ax = sns.barplot(data=top_ten,x="Death Count", y="Department",palette="OrRd_r")
+    
+        plt.suptitle("Top Ten Deadly Departments",fontsize=30)
+
+        plt.xlabel("Death Count",fontsize=20)
+        plt.ylabel("Department",fontsize=20)
+
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
+
+        ax.bar_label(ax.containers[0],fontsize=20)
+
+    elif selected_filter == "Murder Weapons":
+        temp_df = df[['Name', 'Weapon']]
+        temp_df = temp_df.groupby("Weapon").count().sort_values(by='Name', ascending=False).reset_index()
+        temp_df.rename(columns={'Name':'Death Count'},inplace=True)
+        top_ten = temp_df.iloc[0:10]
+
+        fig, ax = plt.subplots(figsize=(20,10))
+        ax = sns.barplot(data=top_ten,x="Death Count", y="Weapon",palette="Reds_r")
+    
+        plt.suptitle("Top Ten Deadly Murder Weapons",fontsize=30)
+
+        plt.xlabel("Death Count",fontsize=20)
+        plt.ylabel("Murder Weapon",fontsize=20)
+
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
+
+        ax.bar_label(ax.containers[0],fontsize=20)
+
+    elif selected_filter == "Days of Month":
+        temp_df = df[['Name', 'Day']]
+        temp_df = temp_df.groupby("Day").count().sort_values(by='Name', ascending=False).reset_index()
+        temp_df.rename(columns={'Name':'Death Count'},inplace=True)
+        top_ten = temp_df.iloc[0:10]
+        top_ten['Day'] = top_ten['Day'].astype("str")
+
+        fig, ax = plt.subplots(figsize=(20,10))
+        ax = sns.barplot(data=top_ten,x="Death Count", y="Day",palette="YlOrRd_r")
+    
+        plt.suptitle("Top Ten Deadly Days of Month",fontsize=30)
+
+        plt.xlabel("Death Count",fontsize=20)
+        plt.ylabel("Day of Month",fontsize=20)
+
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
+
+        ax.bar_label(ax.containers[0],fontsize=20)
+
+    elif selected_filter == "Cause of Deaths":
+        temp_df = df[['Name', 'Cause']]
+        temp_df = temp_df.groupby("Cause").count().sort_values(by='Name', ascending=False).reset_index()
+        temp_df.rename(columns={'Name':'Death Count'},inplace=True)
+        top_ten = temp_df.iloc[0:10]
+
+        fig, ax = plt.subplots(figsize=(20,10))
+        ax = sns.barplot(data=top_ten,x="Death Count", y="Cause",palette="OrRd_r")
+    
+        plt.suptitle("Top Ten Deadly Causes of Death",fontsize=30)
+
+        plt.xlabel("Death Count",fontsize=20)
+        plt.ylabel("Cause of Death",fontsize=20)
+
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
+
+        ax.bar_label(ax.containers[0],fontsize=20) 
+
+    return fig

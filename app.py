@@ -3,42 +3,9 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.figure_factory as ff
+import matplotlib.pyplot as plt
+import seaborn as sns
 import helper 
-
-def fetch_death_tally(df, selected_view):
-    df = df[['Name', 'Year', 'Month', 'Day of week', 'Day', 'State']]
-    if selected_view == "Year":
-        years = helper.year_list(df)
-        state = helper.state_list(df)
-        selected_year = st.sidebar.selectbox("Select Year", years)
-        selected_state = st.sidebar.selectbox("Select State", state)
-        death_tally, display_title = helper.fetch_death_tally_data(df, selected_view, selected_year, selected_state)
-        return death_tally, display_title
-
-    if selected_view == "Month":
-        month = helper.month_list()
-        state = helper.state_list(df)
-        selected_month = st.sidebar.selectbox("Select Month", month)
-        selected_state = st.sidebar.selectbox("Select State", state)
-        death_tally, display_title = helper.fetch_death_tally_data(df, selected_view, selected_month, selected_state)
-        return death_tally, display_title
-
-    if selected_view == "Day of week":
-        day_of_week = helper.day_of_week_list()
-        state = helper.state_list(df)
-        selected_day_of_week = st.sidebar.selectbox("Select Day of Week", day_of_week)
-        selected_state = st.sidebar.selectbox("Select State", state)
-        death_tally, display_title = helper.fetch_death_tally_data(df, selected_view, selected_day_of_week, selected_state)
-        return death_tally, display_title
-
-    if selected_view == "Day":
-        day = helper.days_list(df)
-        state = helper.state_list(df)
-        selected_day = st.sidebar.selectbox("Select Day", day)
-        selected_state = st.sidebar.selectbox("Select State", state)
-        death_tally, display_title = helper.fetch_death_tally_data(df, selected_view, selected_day, selected_state)
-        return death_tally, display_title
-
 
 if __name__=="__main__":
 
@@ -49,19 +16,8 @@ if __name__=="__main__":
 
     user_menu = st.sidebar.radio(
         'Select an Option',
-        ('Death Tally', 'Overall Analysis', 'State-Wise Analysis')
+        ('Overall Analysis', 'Top Ten Deadly...', 'Death Tally', 'State-Wise Analysis', 'Cartogram')
     )
-
-    if user_menu == "Death Tally":
-        st.sidebar.header("Death Tally")
-
-        view_by_list = helper.view_by_dropdown()
-        selected_view = st.sidebar.selectbox("View By", view_by_list)
-
-        represent_death_tally_df, represent_title = fetch_death_tally(df, selected_view)
-
-        st.title(represent_title)
-        st.table(represent_death_tally_df)
 
     if user_menu == "Overall Analysis":
         total_deaths = len(df)
@@ -133,5 +89,40 @@ if __name__=="__main__":
         deaths_distribution_fig = helper.deaths_distribution_over_the_years(df)
         st.plotly_chart(deaths_distribution_fig)
 
-        age_distribution_fig = helper.age_distribution(df)
+        age_distribution_fig = helper.age_distribution("preprocessed data/human_unit_age_distribution_df.csv")
         st.plotly_chart(age_distribution_fig)
+
+        heatmap_fig = helper.heatmap_year_vs_cause("preprocessed data/human_unit_heatmap_year_vs_cause.csv")
+        st.pyplot(heatmap_fig)
+
+        month_bar_chart_fig = helper.month_death_count_bar_chart(df)
+        st.pyplot(month_bar_chart_fig)
+
+        day_bar_chart_fig = helper.day_death_count_bar_chart(df)
+        st.pyplot(day_bar_chart_fig)
+
+        rank_death_fig = helper.rank_tree_map(df)
+        st.plotly_chart(rank_death_fig)
+
+
+    if user_menu == "Top Ten Deadly...":
+        st.title("Top Ten Deadly...")
+        filter_by_list = helper.top_ten_filter_drop_down_list()
+        selected_filter = st.selectbox("Filter By", filter_by_list)
+
+        filtered_bar_plot_fig = helper.top_ten_rankings_fig(df, selected_filter)
+        st.pyplot(filtered_bar_plot_fig)
+
+
+    if user_menu == "Death Tally":
+        st.sidebar.header("Death Tally")
+
+        view_by_list = helper.view_by_dropdown()
+        selected_view = st.sidebar.selectbox("View By", view_by_list)
+
+        represent_death_tally_df, represent_title = helper.fetch_death_tally(df, selected_view)
+
+        st.title(represent_title)
+        st.table(represent_death_tally_df)   
+
+
