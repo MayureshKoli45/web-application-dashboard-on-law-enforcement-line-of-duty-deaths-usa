@@ -12,7 +12,7 @@ if __name__=="__main__":
     df = pd.read_csv('police_deaths.csv')   
 
     st.set_page_config(layout='wide')
-    st.sidebar.title("Law Enforcement Line of Duty Deaths Analysis From 1791 to 2022")
+    st.sidebar.title("United States of America Law Enforcement Line of Duty Deaths Analysis From 1791 to 2022")
 
     user_menu = st.sidebar.radio(
         'Select an Option',
@@ -104,6 +104,9 @@ if __name__=="__main__":
         rank_death_fig = helper.rank_tree_map(df)
         st.plotly_chart(rank_death_fig)
 
+        state_death_fig = helper.state_tree_map(df)
+        st.plotly_chart(state_death_fig)
+
 
     if user_menu == "Top Ten Deadly...":
         st.title("Top Ten Deadly...")
@@ -120,9 +123,56 @@ if __name__=="__main__":
         view_by_list = helper.view_by_dropdown()
         selected_view = st.sidebar.selectbox("View By", view_by_list)
 
-        represent_death_tally_df, represent_title = helper.fetch_death_tally(df, selected_view)
+        represent_death_tally_df, represent_title, represent_state = helper.fetch_death_tally(df, selected_view)
+
+        if represent_state == "United States":
+            st.markdown('''**Note :- The state United States refers to police officers who were directly working for US Department of Justice. 
+            It needed to be included because during scraping the data, many officer department states were assigned as US or United States.**''')
 
         st.title(represent_title)
-        st.table(represent_death_tally_df)   
+
+        sort_by_menu = st.radio(
+            'Sort By',
+            ('None', 'High to Low', 'Low to High'),
+            horizontal=True
+            )
+
+        if sort_by_menu == "None":    
+            st.table(represent_death_tally_df)
+
+        elif sort_by_menu == "High to Low":
+            sorted_df = represent_death_tally_df.sort_values(by="Death Count", ascending=False) 
+            st.table(sorted_df)
+
+        elif sort_by_menu == "Low to High":
+            sorted_df = represent_death_tally_df.sort_values(by="Death Count") 
+            st.table(sorted_df)         
 
 
+    if user_menu == "State-Wise Analysis":
+        st.title("State-Wise Analysis")
+
+        state_selection_list = df['State'].unique().tolist()
+        state_selection_list.sort()
+        selected_state = st.selectbox("Select a State", state_selection_list, index=state_selection_list.index("New York"))
+
+        if selected_state == "United States":
+            st.markdown('''**Note :- The state United States refers to police officers who were directly working for US Department of Justice. 
+            It needed to be included because during scraping the data, many officer department states were assigned as US or United States.**''')
+
+        state_selected_temp_df = df[df["State"] == selected_state] 
+
+        state_deaths_distribution_fig = helper.deaths_distribution_over_the_years(state_selected_temp_df, selected_state)
+        st.plotly_chart(state_deaths_distribution_fig)
+
+        state_heatmap_fig = helper.heatmap_year_vs_cause("preprocessed data/human_unit_heatmap_year_vs_cause.csv", selected_state)
+        st.pyplot(state_heatmap_fig)
+
+        state_month_bar_chart_fig = helper.month_death_count_bar_chart(state_selected_temp_df)
+        st.pyplot(state_month_bar_chart_fig)
+
+        state_day_bar_chart_fig = helper.day_death_count_bar_chart(state_selected_temp_df)
+        st.pyplot(state_day_bar_chart_fig)
+
+        state_rank_death_fig = helper.rank_tree_map(state_selected_temp_df)
+        st.plotly_chart(state_rank_death_fig)   
