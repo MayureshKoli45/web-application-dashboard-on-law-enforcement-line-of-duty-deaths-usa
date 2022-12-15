@@ -5,6 +5,7 @@ import plotly.express as px
 import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.graph_objects as go
 
 # default death tally
 def death_tally(df):
@@ -484,5 +485,35 @@ def top_ten_rankings_fig(df, selected_filter):
         plt.yticks(fontsize=20)
 
         ax.bar_label(ax.containers[0],fontsize=20) 
+
+    return fig
+
+
+def cartogram(csv_path, year_range):
+    usa_states_df = pd.read_csv("preprocessed data/us_states_code.csv")
+    usa_states_df.rename(columns={'state':'State'}, inplace=True)
+
+    temp_df = pd.read_csv(csv_path)
+    temp_df = temp_df[(temp_df['Year'] >= year_range[0]) & (temp_df['Year'] <= year_range[1])] 
+    temp_df = temp_df.groupby("State").count().reset_index()
+    temp_df = temp_df[['State', 'Name']]
+    temp_df.rename(columns={'Name':'Death Count'}, inplace=True)
+    temp_df = temp_df.join(usa_states_df.set_index('State')[['code']], on='State')
+
+    fig = go.Figure(data=go.Choropleth(
+        locations=temp_df['code'],
+        z = temp_df['Death Count'], 
+        locationmode = 'USA-states',
+        colorscale = 'Reds',
+        colorbar_title = "Death Count",
+        text = "Police Deaths in " + temp_df['State']
+    ))
+
+    fig.update_layout(
+        autosize=False,
+        geo_scope='usa',
+        width=1000,
+        height=600,
+    )
 
     return fig

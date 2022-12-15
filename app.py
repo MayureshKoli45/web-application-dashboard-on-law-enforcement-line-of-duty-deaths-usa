@@ -175,4 +175,21 @@ if __name__=="__main__":
         st.pyplot(state_day_bar_chart_fig)
 
         state_rank_death_fig = helper.rank_tree_map(state_selected_temp_df)
-        st.plotly_chart(state_rank_death_fig)   
+        st.plotly_chart(state_rank_death_fig)  
+
+
+    if user_menu == "Cartogram":
+        st.title("Police Deaths in USA Cartogram")
+
+        s_date = int(df["Year"].min())
+        e_date = int(df['Year'].max())
+
+        year_range = st.slider(
+            'Select a range of years',
+            min_value = s_date,
+            max_value = e_date,
+            value = [s_date, e_date]
+        ) 
+
+        map_fig = helper.cartogram("preprocessed data/human_unit_filtered_states_for_map.csv", year_range)
+        st.plotly_chart(map_fig) 
