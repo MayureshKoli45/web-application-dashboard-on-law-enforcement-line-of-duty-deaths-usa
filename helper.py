@@ -62,95 +62,115 @@ def days_list(df):
 
 def fetch_death_tally_data(df, view_by, year_month_dow_day, state):
     if year_month_dow_day == "Overall" and state == "Overall":
-        temp_df = df[['Name', view_by]]
-        temp_df = temp_df.groupby(view_by).count()
-        temp_df.rename(columns = {'Name' : 'Death Count'}, inplace=True)
+        try:
+            temp_df = df[['Name', view_by]]
+            temp_df = temp_df.groupby(view_by).count()
+            temp_df.rename(columns = {'Name' : 'Death Count'}, inplace=True)
         
-        if view_by == "Year":
-            temp_df = temp_df.reset_index()
-            temp_df = temp_df[[view_by, 'Death Count']]
-            temp_df = temp_df.sort_values(by=view_by, ascending=False).reset_index().drop('index', axis=1)
-            display_title = "Overall Years Death Tally"
+            if view_by == "Year":
+                temp_df = temp_df.reset_index()
+                temp_df = temp_df[[view_by, 'Death Count']]
+                temp_df = temp_df.sort_values(by=view_by, ascending=False).reset_index().drop('index', axis=1)
+                display_title = "Overall Years Death Tally"
             
-        elif view_by == "Day":
-            temp_df = temp_df.reset_index()
-            temp_df = temp_df[[view_by, 'Death Count']]
-            temp_df = temp_df.sort_values(by=view_by).reset_index().drop('index', axis=1)
-            display_title = "Overall Days Death Tally"
+            elif view_by == "Day":
+                temp_df = temp_df.reset_index()
+                temp_df = temp_df[[view_by, 'Death Count']]
+                temp_df = temp_df.sort_values(by=view_by).reset_index().drop('index', axis=1)
+                display_title = "Overall Days Death Tally"
             
-        elif view_by == "Month":
-            temp_df = temp_df.reindex(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
-            temp_df = temp_df.reset_index()
-            temp_df = temp_df[[view_by, 'Death Count']]
-            display_title = "Overall Months Death Tally"
+            elif view_by == "Month":
+                temp_df = temp_df.reindex(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+                temp_df = temp_df.reset_index()
+                temp_df = temp_df[[view_by, 'Death Count']]
+                display_title = "Overall Months Death Tally"
             
-        elif view_by == "Day of week":
-            temp_df = temp_df.reindex(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
-            temp_df = temp_df.reset_index()
-            temp_df = temp_df[[view_by, 'Death Count']]  
-            display_title = "Overall Day of Week Death Tally"     
-        
+            elif view_by == "Day of week":
+                temp_df = temp_df.reindex(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
+                temp_df = temp_df.reset_index()
+                temp_df = temp_df[[view_by, 'Death Count']]  
+                display_title = "Overall Day of Week Death Tally"  
+
+        except:
+            temp_df = pd.DataFrame(columns=[view_by, "Death Count"])   
+            display_title = "No Records Found"         
 
     if year_month_dow_day != "Overall" and state == "Overall":
-        temp_df = df[['State', view_by]]
-        total_sum = len(temp_df[temp_df[view_by] == year_month_dow_day])
-        temp_df = temp_df[temp_df[view_by] == year_month_dow_day].groupby('State').count()
-        temp_df = temp_df.reset_index()
-        temp_df.rename(columns={view_by : 'Death Count'}, inplace=True)
+        try:
+            temp_df = df[['State', view_by]]
+            total_sum = len(temp_df[temp_df[view_by] == year_month_dow_day])
+            temp_df = temp_df[temp_df[view_by] == year_month_dow_day].groupby('State').count()
+            temp_df = temp_df.reset_index()
+            temp_df.rename(columns={view_by : 'Death Count'}, inplace=True)
         
-        if view_by == "Year":
-            display_title = f"In {view_by} {year_month_dow_day}, {total_sum} deaths were reported"
+            if view_by == "Year":
+                display_title = f"In {view_by} {year_month_dow_day}, {total_sum} deaths were reported"
             
-        elif view_by == "Month":
-            display_title = f"Throughout the years. In the {view_by} of {year_month_dow_day}, {total_sum} deaths were reported"
+            elif view_by == "Month":
+                display_title = f"Throughout the years. In the {view_by} of {year_month_dow_day}, {total_sum} deaths were reported"
             
-        elif view_by == "Day of week":
-            display_title = f"Throughout the years. On {year_month_dow_day}, {total_sum} deaths were reported"
+            elif view_by == "Day of week":
+                display_title = f"Throughout the years. On {year_month_dow_day}, {total_sum} deaths were reported"
             
-        elif view_by == "Day":
-            display_title = f"Throughout the years. On the Day {year_month_dow_day} of the months, {total_sum} deaths were reported"
+            elif view_by == "Day":
+                display_title = f"Throughout the years. On the Day {year_month_dow_day} of the months, {total_sum} deaths were reported"
+
+        except:
+            temp_df = pd.DataFrame(columns=[view_by, "Death Count"])   
+            display_title = "No Records Found"        
     
     if year_month_dow_day == "Overall" and state != "Overall":
-        temp_df = df[['State', view_by]]
-        total_sum = len(temp_df[temp_df['State'] == state])
-        temp_df = temp_df[temp_df['State'] == state].groupby(view_by).count()
-        temp_df.rename(columns={'State':'Death Count'}, inplace=True)
+        try:
+            temp_df = df[['State', view_by]]
+            total_sum = len(temp_df[temp_df['State'] == state])
+            temp_df = temp_df[temp_df['State'] == state].groupby(view_by).count()
+            temp_df.rename(columns={'State':'Death Count'}, inplace=True)
         
-        if view_by == "Year":
-            temp_df = temp_df.reset_index()
-            temp_df = temp_df.sort_values(by=view_by, ascending=False).reset_index()
-            temp_df = temp_df[[view_by, 'Death Count']]
-            display_title = f"{state} death tally by {view_by}, {total_sum} deaths were reported"
+            if view_by == "Year":
+                temp_df = temp_df.reset_index()
+                temp_df = temp_df.sort_values(by=view_by, ascending=False).reset_index()
+                temp_df = temp_df[[view_by, 'Death Count']]
+                display_title = f"{state} death tally by {view_by}, {total_sum} deaths were reported"
             
-        elif view_by == "Day":
-            temp_df = temp_df.reset_index()
-            temp_df = temp_df.sort_values(by=view_by).reset_index()
-            temp_df = temp_df[[view_by, 'Death Count']]
-            display_title = f"{state} death tally by {view_by}, {total_sum} deaths were reported"
+            elif view_by == "Day":
+                temp_df = temp_df.reset_index()
+                temp_df = temp_df.sort_values(by=view_by).reset_index()
+                temp_df = temp_df[[view_by, 'Death Count']]
+                display_title = f"{state} death tally by {view_by}, {total_sum} deaths were reported"
             
-        elif view_by == "Month":
-            temp_df = temp_df.reindex(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
-            temp_df = temp_df.reset_index()
-            temp_df = temp_df[[view_by, 'Death Count']]
-            display_title = f"{state} death tally by {view_by}, {total_sum} deaths were reported"
+            elif view_by == "Month":
+                temp_df = temp_df.reindex(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+                temp_df = temp_df.reset_index()
+                temp_df = temp_df[[view_by, 'Death Count']]
+                display_title = f"{state} death tally by {view_by}, {total_sum} deaths were reported"
             
-        elif view_by == "Day of week":
-            temp_df = temp_df.reindex(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
-            temp_df = temp_df.reset_index()
-            temp_df = temp_df[[view_by, 'Death Count']] 
-            display_title = f"{state} death tally by {view_by}, {total_sum} deaths were reported"
+            elif view_by == "Day of week":
+                temp_df = temp_df.reindex(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
+                temp_df = temp_df.reset_index()
+                temp_df = temp_df[[view_by, 'Death Count']] 
+                display_title = f"{state} death tally by {view_by}, {total_sum} deaths were reported"
+
+        except:
+            temp_df = pd.DataFrame(columns=[view_by, "Death Count"])
+            display_title = "No Records Found"   
+
     
     if year_month_dow_day != "Overall" and state != "Overall":
-        temp_df = df[['State', view_by]]
-        temp_df = temp_df[(temp_df['State'] == state) & (temp_df[view_by] == year_month_dow_day)]
-        temp_df = temp_df.reset_index()
-        temp_df = temp_df.groupby(view_by).count()
-        temp_df.rename(columns={'index':'Death Count'}, inplace=True)
-        temp_df = temp_df.reset_index()
-        temp_df.iloc[0,2] = state
-        temp_df = temp_df[[view_by, 'State', 'Death Count']]
-        display_title = f"{state} {view_by}:{year_month_dow_day} death tally"
-    
+        try:
+            temp_df = df[['State', view_by]]
+            temp_df = temp_df[(temp_df['State'] == state) & (temp_df[view_by] == year_month_dow_day)]
+            temp_df = temp_df.reset_index()
+            temp_df = temp_df.groupby(view_by).count()
+            temp_df.rename(columns={'index':'Death Count'}, inplace=True)
+            temp_df = temp_df.reset_index()
+            temp_df.iloc[0,2] = state
+            temp_df = temp_df[[view_by, 'State', 'Death Count']]
+            display_title = f"{state} {view_by}:{year_month_dow_day} death tally"
+
+        except:
+            temp_df = pd.DataFrame(columns=[view_by, "State", "Death Count"])
+            display_title = "No Records Found"   
+
     return temp_df, display_title
 
 
@@ -190,31 +210,40 @@ def fetch_death_tally(df, selected_view):
 
 
 
-def deaths_distribution_over_the_years(df, state=None):
+def deaths_distribution_over_the_years(df, unit_menu, state=None):
     deaths_distribution = df[['Name','Year']]
     deaths_distribution = deaths_distribution.groupby("Year").count().reset_index()
     deaths_distribution = deaths_distribution.rename(columns={'Name':'Death Count'})
 
+    if unit_menu == "Human Unit":
+        title = "Reported Police Deaths"
+
+    elif unit_menu == "K9 Unit":
+        title = "Reported K9 Deaths"    
+    
     if state == None:
         fig = px.line(deaths_distribution,
             x="Year",
             y="Death Count",
-            title=f'Reported Police Deaths in USA <br><sup>From {deaths_distribution.iloc[0][0]} to {deaths_distribution.iloc[-1][0]}</sup>'    
+            title=f'{title} in USA <br><sup>From {deaths_distribution.iloc[0][0]} to {deaths_distribution.iloc[-1][0]}</sup>' 
         )
 
     else: 
         fig = px.line(deaths_distribution,
             x="Year",
             y="Death Count",
-            title=f'Reported Police Deaths in {state} <br><sup>From {deaths_distribution.iloc[0][0]} to {deaths_distribution.iloc[-1][0]}</sup>'    
+            title=f'{title} in {state} <br><sup>From {deaths_distribution.iloc[0][0]} to {deaths_distribution.iloc[-1][0]}</sup>'   
         )   
 
     fig.update_layout(
-        autosize=False,
+        autosize=True,
         width=1000,
         height=600,
-        font=dict(
-            size=20)
+        font=dict(size=20),
+        font_color="#000000",
+        title_font_color="#000000",
+        paper_bgcolor="#FFFFFF",
+        plot_bgcolor="#FFFFFF"
     )
     return fig
 
@@ -250,7 +279,11 @@ def age_distribution(csv_path):
         title='Age Distribution by Causes of Death',
         width=1000,
         height=600,
-        font=dict(size=20)
+        font=dict(size=20),
+        font_color="#000000",
+        title_font_color="#000000",
+        paper_bgcolor="#FFFFFF",
+        plot_bgcolor="#FFFFFF"
     )
     
     return fig 
@@ -281,7 +314,7 @@ def month_death_count_bar_chart(df):
     fig, ax = plt.subplots(figsize=(20,10))
     ax = sns.barplot(data=sorted_month_df,x="Death Count", y="Month",palette="magma")
     
-    plt.suptitle("Registered police deaths",fontsize=30)
+    plt.suptitle("Registered deaths",fontsize=30)
     plt.title("Month wise",fontsize=20)
 
     plt.xlabel("Death Count",fontsize=20)
@@ -302,7 +335,7 @@ def day_death_count_bar_chart(df):
     fig, ax = plt.subplots(figsize=(20,10))
     ax = sns.barplot(data=sorted_month_df,x="Death Count", y="Day of week",palette="magma")
     
-    plt.suptitle("Registered police deaths",fontsize=30)
+    plt.suptitle("Registered deaths",fontsize=30)
     plt.title("Day wise",fontsize=20)
 
     plt.xlabel("Death Count",fontsize=20)
@@ -323,7 +356,11 @@ def rank_tree_map(df):
         title='Ranks With the Most Death',
         width=1000,
         height=600,
-        font=dict(size=20)
+        font=dict(size=20),
+        font_color="#000000",
+        title_font_color="#000000",
+        paper_bgcolor="#FFFFFF",
+        plot_bgcolor="#FFFFFF"
     )  
     
     return fig   
@@ -337,14 +374,22 @@ def state_tree_map(df):
         title='States With the Most Death',
         width=1000,
         height=600,
-        font=dict(size=20)
+        font=dict(size=20),
+        font_color="#000000",
+        title_font_color="#000000",
+        paper_bgcolor="#FFFFFF",
+        plot_bgcolor="#FFFFFF"
     )  
     
-    return fig      
+    return fig  
 
 
-def top_ten_filter_drop_down_list():
-    filter_by_list = ['Ranks', 'Years', 'States',  'Departments', 'Murder Weapons', 'Days of Month', 'Cause of Deaths']
+def top_ten_filter_drop_down_list(unit_menu):
+    if unit_menu == "Human Unit":
+        filter_by_list = ['Ranks', 'Years', 'States',  'Departments', 'Murder Weapons', 'Days of Month', 'Cause of Deaths']
+
+    elif unit_menu == "K9 Unit":   
+        filter_by_list = ['Years', 'States', 'Departments', 'Murder Weapons', 'Days of Month', 'Cause of Deaths', 'Danger on Breeds'] 
 
     return filter_by_list
 
@@ -485,6 +530,25 @@ def top_ten_rankings_fig(df, selected_filter):
         plt.yticks(fontsize=20)
 
         ax.bar_label(ax.containers[0],fontsize=20) 
+
+    elif selected_filter == "Danger on Breeds":
+        temp_df = df[['Name', 'Breed']]
+        temp_df = temp_df.groupby("Breed").count().sort_values(by='Name', ascending=False).reset_index()
+        temp_df.rename(columns={'Name':'Death Count'},inplace=True)
+        top_ten = temp_df.iloc[0:10]
+
+        fig, ax = plt.subplots(figsize=(20,10))
+        ax = sns.barplot(data=top_ten,x="Death Count", y="Breed",palette="Reds_r")
+    
+        plt.suptitle("Top Ten Breeds with most deaths",fontsize=30)
+
+        plt.xlabel("Death Count",fontsize=20)
+        plt.ylabel("Breed",fontsize=20)
+
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
+
+        ax.bar_label(ax.containers[0],fontsize=20)    
 
     return fig
 
