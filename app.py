@@ -1,39 +1,44 @@
-import streamlit as st
-import numpy as np
+'''
+This is main app file. To implement this webapp dashboard run this file.
+'''
+
+# Importing required libraries.
+import streamlit as st 
 import pandas as pd
-import plotly.express as px
-import plotly.figure_factory as ff
-import matplotlib.pyplot as plt
-import seaborn as sns
-import helper 
-import human_unit
-import k9_unit
+import human_unit # This library includes the manipulation of the data w.r.t police human_unit.
+import k9_unit # This library includes the manipulation of the data w.r.t police k9_unit.
 
 if __name__=="__main__":  
 
-    try:
-        st.set_page_config(layout='wide')
-        st.sidebar.image("usa_flag.jpg")
-        st.sidebar.title("United States of America Law Enforcement Line of Duty Deaths Analysis From 1791 to 2022")
+    st.set_page_config(layout='wide') # Setting up the page config to wide.
 
-        unit_menu = st.sidebar.radio(
-            'Select a Unit',
-            ('Human Unit', 'K9 Unit'),
-            horizontal=True
-        )
+    st.sidebar.image("image folder/usa_flag.jpg") # Uploading an image to the webapp.
 
-        user_menu = st.sidebar.radio(
-            'Select an Option',
-            ('Overall Analysis', 'Top Ten Deadly...', 'Death Tally', 'State-Wise Analysis', 'Cartogram')
-        )
+    st.sidebar.title("United States of America Law Enforcement Line of Duty Deaths Analysis From 1791 to 2022") # Setting up the title.
 
-        if unit_menu == "Human Unit":
-            df = pd.read_csv('police_deaths.csv') 
-            human_unit.human_unit_analysis(df, user_menu, unit_menu)
+    # This radio button gives choice to analyze the data for Human Unit or K9 Unit.
+    unit_menu = st.sidebar.radio(
+        'Select a Unit', # Title.
+        ('Human Unit', 'K9 Unit'), # Options.
+        horizontal=True # Alignment default is vertical.
+    )
 
-        if unit_menu == "K9 Unit":
-            df = pd.read_csv('k9_deaths.csv') 
-            k9_unit.k9_unit_analysis(df, user_menu, unit_menu)  
+    # This radio button gives choice to view the following features.
+    user_menu = st.sidebar.radio(
+        'Select an Option',
+        ('Overall Analysis', 'Top Ten Deadly...', 'Death Tally', 'State-Wise Analysis', 'Cartogram') # Features.
+    )
 
-    except:
-        st.sidebar.title("Sorry for the Inconvenience. Please Reload the Page")          
+    # If user select Human Unit section then it will trigger this if block.
+    if unit_menu == "Human Unit":
+        df = pd.read_csv('main data files/police_deaths.csv') # Storing human unit dataset.
+            
+        # Calling human_unit_analysis function from human_unit.py file (More info about this is in their respective files).
+        human_unit.human_unit_analysis(df, user_menu, unit_menu)
+
+    # If user select K9 Unit section then it will trigger this if block.
+    if unit_menu == "K9 Unit":
+        df = pd.read_csv('main data files/k9_deaths.csv') # Storing K9 unit dataset.
+
+        # Calling human_unit_analysis function from k9_unit.py file (More info about this is in their respective files).
+        k9_unit.k9_unit_analysis(df, user_menu, unit_menu)          

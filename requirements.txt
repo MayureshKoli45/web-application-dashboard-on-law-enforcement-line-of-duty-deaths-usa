@@ -4,7 +4,7 @@ plotly
 matplotlib
 seaborn
 scipy
-streamlit
+streamlit==1.15.2
 requests
 beautifulsoup4
 python-dateutil
