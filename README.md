@@ -1,53 +1,79 @@
-# WebScraping_And_WebApp_On_Law_Enforcement_Line_Of_Duty_Deaths_USA
 
-Note -> The analysis was done on first version of dataset which is "police_deaths_in_america". New version is updated every month.
+# Web Application Dashboard on Law Enforcement Line of Duty Deaths USA
 
-New Version Features -> With the new web scrapper I have upgraded dataset with more information.
-
-                        1) The new dataset version is "police_deaths_USA_v6" and "k9_deaths_USA_v6" Which is in "After Major Update Versions" folder (For all versions please check out this link :-https://www.kaggle.com/datasets/mayureshkoli/police-deaths-in-usa-from-1791-to-2022)
-                        2) Splitted the dataset into 2 different datasets 1 for Human Unit and other for K9 Unit.
-                        3) Check out the new web scrapper code in this file "final_scrapper_program_with_comments".
-                        4) Also added the correction file which is needed to adjust some data points from K9 dataset.
-                        5) Extended data of Human Unit dataset to 13 Features.
-                        6) Extended data of K9 Unit dataset to 14 Features.
-
-Data Analyst: Mayuresh Koli
-
-I am going to scrape all the police deaths data which occured in USA from 1791 to Present including both Human Unit and K9 Unit which are registered on this website https://www.odmp.org/
-
-This data then can be used for data analytics.
-
-I have chosen Jupyter Notebook over VS Code because i think i can express my program here more comfortably than VS Code.
-
-I have written all the necessary comments and tried to make this program beginner friendly as much as possible.
-
-Feel free to check the program and I hope you will be able to understand this program and try to practice or use it as a reference.
-
-The dataset that i have collected in this project you can find it on my Kaggle as well as Github Profile.
-
-Tip :- If you want to understand the program well I can only say that separate the program into sections and run it individually and also you can do some debugging on it.
-
-For any doubts and query you can connect with me on Linkedin or Email me.
-
-Email :- kolimayuresh450@gmail.com
-
-Linkedin :- https://www.linkedin.com/in/mayuresh45/
-
-Github :- https://github.com/MayureshKoli45
-
-Kaggle :- https://www.kaggle.com/mayureshkoli¶
-
-ThankYou for your time and efforts.
+![Python](https://img.shields.io/badge/%20%20%20Programming%20Language-Python-blue)
+![Libraries](https://img.shields.io/badge/%20%20%20Libraries%20Used%20For%20Web%20App-numpy--pandas--plotly--matplotlib--seaborn--scipy--streamlit%3D%3D1.15.2-brightgreen) 
 
 
-Purpose:
-Conducting a data analysis on the police deaths in America dataset to find some insights. The data was scrapped from this "https://www.odmp.org/" website with the help of Python. I have also cleaned and organized the data with the help of Microsoft Excel.
+This interactive web application dashboard provides user with the analysis on the Law Enforcement Line of Duty Deaths in USA from 1791 to 2022.
 
-Dataset Description:
-This dataset contains information on fatal police deaths in the United States. The data includes the victim's rank, name, department, date of death, and cause of death. The data spans from 1791 to the present day. This dataset will be updated on yearly basis.
+### It have two main sections ->
+1. Human Unit -> This section provides all the analysis w.r.t Human police unit.
+2. K9 Unit -> This section provides all the analysis w.r.t K9 police unit.
 
-For detailed project description plese download and check the project_description and final_scrapper_program_with_comments file provided in code section
 
-Description, data mining python script, dataset csv files, images used in this project and jupyter notebook are all provided in the code section make sure to check all this stuff to understand the project.
+### Currently It has 5 features ->
+1. Overall Analysis -> This feature gives an overall analysis by presenting top statistics and different types of visualizations.
+2. Top Ten Deadly... -> This feature shows bar chart according to their deaths count. For example top ten deadly states, years, etc.
+3. Death Tally -> This feature shows death tally according to the user selections like death tally on this year, month, state, etc.
+4. State-Wise Analysis -> This feature shows different types of visualizations according to the selected state by the user.
+5. Cartogram -> This feature shows a map of the USA and death count of each state on that map. User can select the year range.
 
-Tableau visualization link :- https://public.tableau.com/app/profile/mayuresh.koli/viz/USALawEnforcementLineofDutyDeaths/main_dashboard
+
+## Run Locally ->
+
+### Prerequisite:
+1. Python 3.10 or greater.
+2. Github account.
+3. IDE [VS Code, Spyder, etc.].
+4. Git CLI.
+
+#### Clone the project
+
+```bash
+  git clone https://github.com/MayureshKoli45/web-application-dashboard-on-law-enforcement-line-of-duty-deaths-usa.git
+```
+
+#### Go to the project directory
+
+```bash
+  python3 -m venv /cloned-repo-path
+```
+
+#### Open your IDE and then activate venv.
+
+#### Install dependencies
+
+```bash
+  pip install -r requirements.txt
+```
+
+#### Start the app locally
+
+```bash
+  streamlit run app.py
+```
+
+
+## Directories Description
+1. image folder -> This directory contains and image of the USA flag which I have used in Web App.
+
+2. main data files -> This directory contains 2 main csv files which are the source of this project.
+
+3. preprocessed data -> Some features implementation required some data to be preprocessed so that it will reduce the load time of the web app. This directory contains some preprocessed csv files.
+
+## Important Files Description
+1. app.py -> This is main app file. To implement this webapp dashboard run this file.
+
+2. human_unit.py -> This file contains the data manipulation and data visualization w.r.t police deaths of Human Unit. This file contains main functionalities of the webapp dashboard.
+
+3. k9_unit.py -> This file contains the data manipulation and data visualization w.r.t police deaths of K9 Unit. This file contains main functionalities of the webapp dashboard.
+
+4. helper.py -> This file contains all the helper functions.
+
+## Feel free to connect with me  
+1. Email :- kolimayuresh450@gmail.com
+2. Linkedin :- https://www.linkedin.com/in/mayuresh45/
+3. Kaggle :- https://www.kaggle.com/mayureshkoli
+
+

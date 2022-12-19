@@ -5,6 +5,3 @@ matplotlib
 seaborn
 scipy
 streamlit==1.15.2
-requests
-beautifulsoup4
-python-dateutil
