@@ -2,8 +2,10 @@
 # Web Application Dashboard on Law Enforcement Line of Duty Deaths USA
 
 ![Python](https://img.shields.io/badge/%20%20%20Programming%20Language-Python-blue)
+
 ![Libraries](https://img.shields.io/badge/%20%20%20Libraries%20Used%20For%20Web%20App-numpy--pandas--plotly--matplotlib--seaborn--scipy--streamlit%3D%3D1.15.2-brightgreen) 
 
+### Check out my Web Application -> [Web Application Dashboard](https://mayureshkoli45-web-application-dashboard-on-law-enfo-app-7hs2e5.streamlit.app/) 
 
 This interactive web application dashboard provides user with the analysis on the Law Enforcement Line of Duty Deaths in USA from 1791 to 2022.
 
@@ -70,6 +72,9 @@ This interactive web application dashboard provides user with the analysis on th
 3. k9_unit.py -> This file contains the data manipulation and data visualization w.r.t police deaths of K9 Unit. This file contains main functionalities of the webapp dashboard.
 
 4. helper.py -> This file contains all the helper functions.
+
+## Web Application Deployment
+I have used streamlit services to deploy my web application dashboard.
 
 ## Feel free to connect with me  
 1. Email :- kolimayuresh450@gmail.com
