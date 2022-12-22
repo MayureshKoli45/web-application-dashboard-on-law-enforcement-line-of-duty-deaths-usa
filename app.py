@@ -12,9 +12,12 @@ if __name__=="__main__":
 
     st.set_page_config(layout='wide') # Setting up the page config to wide.
 
+    with open('style.css') as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
+
     st.sidebar.image("image folder/usa_flag.jpg") # Uploading an image to the webapp.
 
-    st.sidebar.title("United States of America Law Enforcement Line of Duty Deaths Analysis From 1791 to 2022") # Setting up the title.
+    st.sidebar.title('United States of America Law Enforcement Line of Duty Deaths Analysis From 1791 to 2022') # Setting up the title.
 
     # This radio button gives choice to analyze the data for Human Unit or K9 Unit.
     unit_menu = st.sidebar.radio(

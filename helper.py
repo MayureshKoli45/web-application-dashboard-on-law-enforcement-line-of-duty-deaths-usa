@@ -399,8 +399,8 @@ def deaths_distribution_over_the_years(df, unit_menu, state=None):
     # Updating plotly figure layout.
     fig.update_layout(
         autosize=False,
-        width=1000,
-        height=600,
+        width=1100,
+        height=500,
         font=dict(size=20),
         font_color="#000000",
         title_font_color="#000000",
@@ -455,9 +455,9 @@ def age_distribution(csv_path):
     # Updating plotly figure layout.
     fig.update_layout(
         autosize=False,
-        title='Age Distribution by Causes of Death',
-        width=1000,
-        height=600,
+        title='Age Distribution by Causes of Death<br><sup>Select causes of deaths by clicking them in the legend to compare</sup>',
+        width=1100,
+        height=500,
         font=dict(size=20),
         font_color="#000000",
         title_font_color="#000000",
@@ -585,7 +585,7 @@ def rank_tree_map(df):
     fig.update_layout(
         autosize=False,
         title='Ranks With the Most Death',
-        width=1000,
+        width=1100,
         height=600,
         font=dict(size=20),
         font_color="#000000",
@@ -614,7 +614,7 @@ def state_tree_map(df):
     fig.update_layout(
         autosize=False,
         title='States With the Most Death',
-        width=1000,
+        width=1100,
         height=600,
         font=dict(size=20),
         font_color="#000000",

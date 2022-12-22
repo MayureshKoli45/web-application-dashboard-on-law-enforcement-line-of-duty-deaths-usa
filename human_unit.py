@@ -62,72 +62,77 @@ def human_unit_analysis(df, user_menu, unit_menu):
         deadly_state = deadly_state.iloc[0][0] # Highest number of deaths in this state.
 
 
-        st.title("Top Statistics") # Streamlit title for this feature
-
         # Since I have 9 various important statistics to show I wanted to present this info in the 3*3 grid form.
-        # For that you have to declare 3 columns each time and pass the stat variable info through title, header, subheader or markdown. 
+        # For that you have to declare 3 columns each time and pass the stat variable info through title, header, metric, subheader or markdown. 
         # Grid first row.
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.subheader("Total Deaths Reported")
-            st.header(total_deaths)
+            st.metric("Total Deaths Reported", total_deaths)
 
         with col2:
-            st.subheader("Average Deaths/Year")
-            st.header(avg_deaths_per_year) 
+            st.metric("Average Deaths/Year", avg_deaths_per_year)
 
         with col3:
-            st.subheader("Deadly Year")
-            st.header(deadly_year)  
+            st.metric("Deadly Year", deadly_year)
 
-        # Grid second row.
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.subheader("Unique Causes of Death")
-            st.header(unique_cod)
-
-        with col2:
-            st.subheader("Unique Murder Weapons")
-            st.header(unique_weapons) 
-
-        with col3:
-            st.subheader("Unique Departments")
-            st.header(total_departments) 
-
-        # Grid third row.
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.subheader("Deadly Cause of Death")
-            st.header(deadly_cod)
-
-        with col2:
-            st.subheader("Deadly Murder Weapon")
-            st.header(deadly_weapon) 
-
-        with col3:
-            st.subheader("Deadly State")
-            st.header(deadly_state)        
+        st.title('')               
 
         # This variable contains plotly figure which is aquired from a helper function.
         deaths_distribution_fig = helper.deaths_distribution_over_the_years(df, unit_menu)
         st.plotly_chart(deaths_distribution_fig) # Display the figure.
+
+        st.text('') 
 
         # Same strategy is applied below except some functions takes path of the csv file.
 
         age_distribution_fig = helper.age_distribution("preprocessed data/human_unit_age_distribution_df.csv")
         st.plotly_chart(age_distribution_fig)
 
+        st.text('') 
+
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Unique Causes of Death", unique_cod)
+
+        with col2:
+            st.metric("Deadly Cause of Death", deadly_cod)    
+
+        with col3:
+            st.metric("Unique Murder Weapons", unique_weapons) 
+
+        st.title('')       
+
         heatmap_fig = helper.heatmap_year_vs_cause("preprocessed data/human_unit_heatmap_year_vs_cause.csv")
         st.pyplot(heatmap_fig)
+
+        st.text('') 
 
         month_bar_chart_fig = helper.month_death_count_bar_chart(df)
         st.pyplot(month_bar_chart_fig)
 
+        st.text('') 
+
         day_bar_chart_fig = helper.day_death_count_bar_chart(df)
         st.pyplot(day_bar_chart_fig)
 
+        st.text('')  
+
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Unique Departments", total_departments)
+
+        with col2:
+            st.metric("Deadly State", deadly_state)
+
+        with col3:
+            st.metric("Deadly Murder Weapon", deadly_weapon) 
+
+        st.title('')     
+
         rank_death_fig = helper.rank_tree_map(df)
         st.plotly_chart(rank_death_fig)
+
+        st.text('') 
 
         state_death_fig = helper.state_tree_map(df)
         st.plotly_chart(state_death_fig)
@@ -257,3 +262,5 @@ def human_unit_analysis(df, user_menu, unit_menu):
 
         # Displaying the figure.
         st.plotly_chart(map_fig)
+
+

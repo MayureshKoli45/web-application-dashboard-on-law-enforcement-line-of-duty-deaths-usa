@@ -7,6 +7,8 @@
 
 ### Check out my Web Application -> [Web Application Dashboard](https://mayureshkoli45-web-application-dashboard-on-law-enfo-app-7hs2e5.streamlit.app/) 
 
+### Check out how the data was scraped -> [Web Scraper Repo](https://github.com/MayureshKoli45/web-scraper-law-enforcement-line-of-duty-deaths-usa) 
+
 This interactive web application dashboard provides user with the analysis on the Law Enforcement Line of Duty Deaths in USA from 1791 to 2022.
 
 ### It have two main sections ->
